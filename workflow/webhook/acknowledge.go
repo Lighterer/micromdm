@@ -15,11 +15,12 @@ type AcknowledgeEvent struct {
 	RawPayload   []byte            `json:"raw_payload"`
 }
 
-func acknowledgeEvent(topic string, data []byte) (*Event, error) {
+func acknowledgeEvent(topic string, data []byte) (*Event, string, error) {
 	var ev mdm.AcknowledgeEvent
 	if err := mdm.UnmarshalAcknowledgeEvent(data, &ev); err != nil {
-		return nil, errors.Wrap(err, "unmarshal acknowledge event for webhook")
+		return nil, "", errors.Wrap(err, "unmarshal acknowledge event for webhook")
 	}
+
 	webhookEvent := Event{
 		Topic:     topic,
 		EventID:   ev.ID,
@@ -33,9 +34,10 @@ func acknowledgeEvent(topic string, data []byte) (*Event, error) {
 			RawPayload:  ev.Raw,
 		},
 	}
+
 	if ev.Response.EnrollmentID != nil {
 		webhookEvent.AcknowledgeEvent.EnrollmentID = *ev.Response.EnrollmentID
 	}
 
-	return &webhookEvent, nil
+	return &webhookEvent, ev.RemoteAddr, nil
 }

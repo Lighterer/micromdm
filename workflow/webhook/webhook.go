@@ -93,14 +93,15 @@ func (w *Worker) Run(ctx context.Context) error {
 
 	for {
 		var (
-			event *Event
-			err   error
+			event      *Event
+			err        error
+			remoteAddr string
 		)
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
 		case ev := <-ackEvents:
-			event, err = acknowledgeEvent(ev.Topic, ev.Message)
+			event, remoteAddr, err = acknowledgeEvent(ev.Topic, ev.Message)
 		case ev := <-authenticateEvents:
 			event, err = checkinEvent(ev.Topic, ev.Message)
 		case ev := <-tokenUpdateEvents:
@@ -121,7 +122,7 @@ func (w *Worker) Run(ctx context.Context) error {
 			continue
 		}
 
-		if err := postWebhookEvent(ctx, w.client, w.url, event); err != nil {
+		if err := postWebhookEvent(ctx, w.client, w.url, event, remoteAddr); err != nil {
 			level.Info(w.logger).Log(
 				"msg", "post webhook event",
 				"err", err,

@@ -9,11 +9,12 @@ import (
 )
 
 type AcknowledgeEvent struct {
-	ID       string
-	Time     time.Time
-	Response Response
-	Params   map[string]string
-	Raw      []byte
+	ID         string
+	Time       time.Time
+	Response   Response
+	Params     map[string]string
+	Raw        []byte
+	RemoteAddr string
 }
 
 type Response struct {
@@ -48,11 +49,12 @@ func MarshalAcknowledgeEvent(e *AcknowledgeEvent) ([]byte, error) {
 	}
 
 	return proto.Marshal(&connectproto.Event{
-		Id:       e.ID,
-		Time:     e.Time.UnixNano(),
-		Response: response,
-		Params:   e.Params,
-		Raw:      e.Raw,
+		Id:         e.ID,
+		Time:       e.Time.UnixNano(),
+		Response:   response,
+		Params:     e.Params,
+		Raw:        e.Raw,
+		RemoteAddr: e.RemoteAddr,
 	})
 }
 
@@ -75,6 +77,7 @@ func UnmarshalAcknowledgeEvent(data []byte, e *AcknowledgeEvent) error {
 		RequestType:  r.GetRequestType(),
 		CommandUUID:  r.GetCommandUuid(),
 	}
+	e.RemoteAddr = pb.GetRemoteAddr()
 	e.Raw = pb.GetRaw()
 	e.Params = pb.GetParams()
 	return nil

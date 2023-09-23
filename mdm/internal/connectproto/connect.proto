@@ -10,6 +10,7 @@ message Event {
     Response response = 3;
     bytes raw = 4;
     map<string, string> params = 5;
+    string remote_addr = 6;
 }
 
 message Response {

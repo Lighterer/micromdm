@@ -18,6 +18,7 @@ func postWebhookEvent(
 	client httpClient,
 	url string,
 	event interface{},
+	remoteAddr string,
 ) error {
 	raw, err := json.MarshalIndent(event, "", "  ")
 	if err != nil {
@@ -29,6 +30,7 @@ func postWebhookEvent(
 		return errors.Wrap(err, "create webhook http request")
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	req.Header.Set("Remote-Addr", remoteAddr)
 
 	resp, err := client.Do(req.WithContext(ctx))
 	if err != nil {

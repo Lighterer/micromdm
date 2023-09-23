@@ -51,11 +51,12 @@ func decodeAcknowledgeRequest(ctx context.Context, r *http.Request) (interface{}
 	}
 
 	event := AcknowledgeEvent{
-		ID:       uuid.New().String(),
-		Time:     time.Now().UTC(),
-		Response: res,
-		Params:   params,
-		Raw:      body,
+		ID:         uuid.New().String(),
+		RemoteAddr: r.RemoteAddr,
+		Time:       time.Now().UTC(),
+		Response:   res,
+		Params:     params,
+		Raw:        body,
 	}
 	req := acknowledgeRequest{Event: event}
 	return req, nil
