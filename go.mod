@@ -15,14 +15,14 @@ require (
 	github.com/kolide/kit v0.0.0-20180912215818-0c28f72eb2b0
 	github.com/korylprince/go-macos-pkg v1.3.5
 	github.com/lib/pq v1.0.0
-	github.com/micromdm/go4 v0.0.0-20210104222236-8a0936d9e451
+	github.com/micromdm/go4 v0.0.0-20230719210527-7c4a9b165b09
 	github.com/micromdm/scep/v2 v2.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/pressly/goose v2.3.0+incompatible
 	go.mozilla.org/pkcs7 v0.0.0-20210826202110-33d05740a352
 	golang.org/x/crypto v0.6.0
 	golang.org/x/net v0.7.0
-	google.golang.org/protobuf v1.28.1
+	google.golang.org/protobuf v1.30.0
 	gopkg.in/Masterminds/squirrel.v1 v1.0.0-20170825200431-a6b93000bd21
 )
 
